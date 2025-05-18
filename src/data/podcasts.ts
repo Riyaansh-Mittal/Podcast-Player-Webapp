@@ -1,0 +1,115 @@
+import type { Episode, PodcastSeries } from "@/utills/types";
+
+export const podcastSeries: PodcastSeries = {
+  id: "magnus-archives",
+  title: "The Magnus Archives",
+  author: "Rusty Quill",
+  description: "A horror fiction anthology podcast examining what lurks in the archives of the Magnus Institute, an organization dedicated to researching the esoteric and the weird.",
+  categories: ["Horror", "Fiction", "Anthology"],
+  totalEpisodes: 200,
+  thumbnailUrl: "./Thumbnail.jpg",
+};
+
+export const allEpisodes: Episode[] = [
+  {
+    id: "ep1",
+    title: "Angler Fish",
+    number: 1,
+    duration: "24:12",
+    date: "March 24, 2016",
+    description: "Statement of Nathan Watts, regarding an encounter on Old Fishmarket Close, Edinburgh.",
+    audioUrl: "./EP1.mp3",
+    thumbnailUrl: "./Thumbnail.jpg",
+    chapters: [
+      { title: "Introduction", time: "0:00" },
+      { title: "Original Statement", time: "1:04" },
+      { title: "The Night Bus", time: "3:20" },
+      { title: "The Ambulance", time: "6:19" },
+      { title: "The Table", time: "9:03" },
+      { title: "Leaving", time: "9:34" },
+      { title: "Watching Graham", time: "10:20" },
+      { title: "Grahams energy", time: "12:16" },
+      { title: "He did almost nothing else", time: "13:29" },
+      { title: "The pipe", time: "15:24" },
+      { title: "The arm", time: "16:07" },
+      { title: "The police", time: "17:21" },
+      { title: "Grahams flat", time: "18:00" },
+      { title: "Police", time: "18:58" },
+      { title: "The New Graham", time: "19:41" },
+      { title: "The Old Graham", time: "20:23" },
+      { title: "Statement Ends", time: "21:17" },
+    ]
+  },
+  {
+    id: "ep2",
+    title: "Do Not Open",
+    number: 2,
+    duration: "22:45",
+    date: "March 31, 2016",
+    description: "Statement of Joshua Gillespie, regarding his time in possession of an apparently empty wooden casket.",
+    audioUrl: "./EP1.mp3", 
+    thumbnailUrl: "./Thumbnail.jpg", 
+    chapters: [
+      { title: "Introduction", time: "0:00" },
+      { title: "Original Statement", time: "1:12" },
+      { title: "The Package", time: "3:45" },
+      { title: "The Key", time: "7:30" },
+      { title: "Strange Sounds", time: "10:20" },
+      { title: "Statement Ends", time: "20:45" },
+    ]
+  },
+  {
+    id: "ep3",
+    title: "Across the Street",
+    number: 3,
+    duration: "25:36",
+    date: "April 7, 2016",
+    description: "Statement of Amy Patel, regarding the alleged disappearance of her acquaintance Graham Folger.",
+    audioUrl: "./EP1.mp3",
+    thumbnailUrl: "./Thumbnail.jpg",
+    chapters: [
+      { title: "Introduction", time: "0:00" },
+      { title: "Original Statement", time: "1:30" },
+      { title: "Meeting Graham", time: "4:15" },
+      { title: "The Window", time: "9:22" },
+      { title: "The Doppelgänger", time: "15:10" },
+      { title: "Statement Ends", time: "23:45" },
+    ]
+  },
+  {
+    id: "ep4",
+    title: "Piecemeal",
+    number: 4,
+    duration: "27:19",
+    date: "April 14, 2016",
+    description: "Statement of Dominic Swain, regarding a book briefly in his possession in the winter of 2012.",
+    audioUrl: "./EP1.mp3", 
+    thumbnailUrl: "./Thumbnail.jpg", 
+    chapters: [
+      { title: "Introduction", time: "0:00" },
+      { title: "Original Statement", time: "1:15" },
+      { title: "The Book", time: "3:50" },
+      { title: "First Reading", time: "8:30" },
+      { title: "The Transformation", time: "14:25" },
+      { title: "Statement Ends", time: "25:10" },
+    ]
+  },
+  {
+    id: "ep5",
+    title: "Thrown Away",
+    number: 5,
+    duration: "23:42",
+    date: "April 21, 2016",
+    description: "Statement of Kieran Woodward, regarding items recovered from the refuse of 93 Lancaster Road, Walthamstow.",
+    audioUrl: "./EP1.mp3", 
+    thumbnailUrl: "./Thumbnail.jpg", 
+    chapters: [
+      { title: "Introduction", time: "0:00" },
+      { title: "Original Statement", time: "1:20" },
+      { title: "The Discovery", time: "4:10" },
+      { title: "The Objects", time: "9:15" },
+      { title: "The Encounter", time: "15:30" },
+      { title: "Statement Ends", time: "22:05" },
+    ]
+  },
+];
