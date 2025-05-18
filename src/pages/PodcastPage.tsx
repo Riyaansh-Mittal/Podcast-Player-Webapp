@@ -32,8 +32,8 @@ export default function PodcastPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      <div className="flex flex-col lg:flex-row gap-6">
+    <div className="w-full mx-auto px-2 sm:px-3 md:px-4 lg:px-6 py-6 max-w-screen-2xl">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
         <div className="w-full lg:w-8/12 space-y-6">
           <EpisodeDetails
             episode={currentEpisode}
