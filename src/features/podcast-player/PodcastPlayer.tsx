@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
-import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, FastForward } from "lucide-react";
 
 type Chapter = {
   title: string;
-  time: string; // "0:00"
+  time: string;
 };
 
 type Props = {
@@ -29,7 +29,6 @@ export default function PodcastPlayer({
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  // const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [isHoveringControls, setIsHoveringControls] = useState(false);
@@ -41,6 +40,7 @@ export default function PodcastPlayer({
     time: number;
     x: number;
   } | null>(null);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
   type ChapterWithSeconds = Chapter & { seconds: number };
 
@@ -77,13 +77,14 @@ export default function PodcastPlayer({
     audio.addEventListener("progress", updateBuffer);
 
     audio.volume = volume;
+    audio.playbackRate = playbackSpeed;
 
     return () => {
       audio.removeEventListener("timeupdate", update);
       audio.removeEventListener("loadedmetadata", onLoad);
       audio.removeEventListener("progress", updateBuffer);
     };
-  }, [volume]);
+  }, [volume, playbackSpeed]);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -140,10 +141,10 @@ export default function PodcastPlayer({
 
     if (audio.paused) {
       audio.play();
-      setIsPlaying(true); // use prop
+      setIsPlaying(true); 
     } else {
       audio.pause();
-      setIsPlaying(false); // use prop
+      setIsPlaying(false);
     }
   };
 
@@ -182,6 +183,18 @@ export default function PodcastPlayer({
     const percent = (e.clientX - rect.left) / rect.width;
     const seekTime = percent * duration;
     handleSeek(seekTime);
+  };
+
+  const changePlaybackSpeed = () => {
+    const speeds = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+    const currentIndex = speeds.indexOf(playbackSpeed);
+    const nextIndex = (currentIndex + 1) % speeds.length;
+    const newSpeed = speeds[nextIndex];
+    
+    if (audioRef.current) {
+      audioRef.current.playbackRate = newSpeed;
+    }
+    setPlaybackSpeed(newSpeed);
   };
 
   const currentChapterIndex = enrichedChapters.findIndex(
@@ -229,7 +242,7 @@ export default function PodcastPlayer({
 
           <div className="absolute bottom-0 left-0 right-0 p-4">
             <div
-              className="relative w-full h-4 group cursor-pointer"
+              className="relative w-full h-6 group cursor-pointer"
               ref={progressBarRef}
               onClick={handleProgressBarClick}
               onMouseMove={(e) => {
@@ -261,36 +274,32 @@ export default function PodcastPlayer({
                 setHoverTimePosition(null);
               }}
             >
+              <div className="absolute top-2 h-2 w-full bg-gray-700 rounded-full" />
+
               <div
-                className="absolute h-1 bg-gray-500 rounded-full"
+                className="absolute top-2 h-2 bg-gray-500 rounded-full"
                 style={{ width: `${bufferPercent}%` }}
               />
 
               <div
-                className="absolute h-1 bg-red-600 rounded-full group-hover:h-2 transition-all"
+                className="absolute top-2 h-2 bg-red-600 rounded-full"
                 style={{ width: `${(currentTime / duration) * 100}%` }}
               />
 
-              {enrichedChapters.map((ch, i) => {
-                const nextChapterStart =
-                  i < enrichedChapters.length - 1
-                    ? enrichedChapters[i + 1].seconds
-                    : duration;
+              <div 
+                className="absolute top-0.5 h-5 w-5 bg-white rounded-full shadow-md transform -translate-x-1/2 hover:scale-110 transition-transform"
+                style={{ left: `${(currentTime / duration) * 100}%` }}
+              />
 
-                const segmentWidth =
-                  ((nextChapterStart - ch.seconds) / duration) * 100;
-
-                return (
-                  <div
-                    key={i}
-                    className="absolute top-0 h-1 bg-gray-700 group-hover:h-2 transition-all"
-                    style={{
-                      left: `${(ch.seconds / duration) * 100}%`,
-                      width: `${segmentWidth}%`,
-                    }}
-                  />
-                );
-              })}
+              {enrichedChapters.map((ch, i) => (
+                <div
+                  key={i}
+                  className="absolute top-2 h-2 w-1 bg-white rounded-full z-10"
+                  style={{
+                    left: `${(ch.seconds / duration) * 100}%`,
+                  }}
+                />
+              ))}
 
               {hoverTimePosition && (
                 <div
@@ -303,7 +312,7 @@ export default function PodcastPlayer({
 
               {hoverTimePosition && (
                 <div
-                  className="absolute bottom-6 bg-black/80 p-2 rounded text-xs z-10 transform -translate-x-1/2"
+                  className="absolute bottom-8 bg-black/80 p-2 rounded text-xs z-10 transform -translate-x-1/2"
                   style={{
                     left: `${(hoverTimePosition.time / duration) * 100}%`,
                   }}
@@ -318,7 +327,7 @@ export default function PodcastPlayer({
               )}
             </div>
 
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between mt-4">
               <div className="flex items-center gap-4">
                 <button
                   onClick={togglePlay}
@@ -342,33 +351,57 @@ export default function PodcastPlayer({
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <button
-                  onClick={toggleMute}
-                  className="text-white hover:text-gray-300"
+                  onClick={changePlaybackSpeed}
+                  className="flex items-center gap-1 bg-gray-800 px-2 py-1 rounded hover:bg-gray-700 transition-colors"
+                  title="Change playback speed"
                 >
-                  {isMuted ? (
-                    <VolumeX className="w-5 h-5" />
-                  ) : (
-                    <Volume2 className="w-5 h-5" />
-                  )}
+                  <FastForward className="w-4 h-4" />
+                  <span className="text-xs font-medium">{playbackSpeed}x</span>
                 </button>
-                <div className="w-24">
-                  <Slider
-                    value={[isMuted ? 0 : volume]}
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    onValueChange={handleVolumeChange}
-                    className="h-1"
-                  />
-                  <div
-                    className="h-1 bg-white rounded-full absolute pointer-events-none"
-                    style={{
-                      width: `${(isMuted ? 0 : volume) * 100}%`,
-                      maxWidth: "96px",
-                    }}
-                  />
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleMute}
+                    className="text-white hover:text-gray-300"
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-5 h-5" />
+                    ) : (
+                      <Volume2 className="w-5 h-5" />
+                    )}
+                  </button>
+                  <div className="w-24 relative h-6 flex items-center">
+                    {/* Volume background track */}
+                    <div className="absolute h-1 w-full bg-gray-700 rounded-full" />
+                    
+                    {/* Volume level track */}
+                    <div
+                      className="absolute h-1 rounded-full"
+                      style={{
+                        width: `${(isMuted ? 0 : volume) * 100}%`,
+                        maxWidth: "100%",
+                        background: "linear-gradient(to right, #9ca3af, #f9fafb)"
+                      }}
+                    />
+                    
+                    {/* Volume thumb */}
+                    <div 
+                      className="absolute h-3 w-3 bg-white rounded-full shadow-md transform -translate-x-1/2"
+                      style={{ left: `${(isMuted ? 0 : volume) * 100}%` }}
+                    />
+                    
+                    {/* Hidden slider for functionality */}
+                    <Slider
+                      value={[isMuted ? 0 : volume]}
+                      min={0}
+                      max={1}
+                      step={0.01}
+                      onValueChange={handleVolumeChange}
+                      className="opacity-0 z-10 h-6"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
