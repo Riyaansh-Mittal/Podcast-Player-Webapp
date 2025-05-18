@@ -1,4 +1,3 @@
-import React from "react";
 import { Search, Bell, User, ListMusic } from "lucide-react";
 
 export default function Header() {

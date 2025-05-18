@@ -1,5 +1,4 @@
 import "./App.css";
-import PodcastPlayer from "./features/podcast-player/PodcastPlayer";
 import Layout from "./layout/Layout";
 import PodcastPage from "./pages/PodcastPage";
 

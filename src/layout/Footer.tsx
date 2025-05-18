@@ -1,4 +1,3 @@
-import React from "react";
 import { ListMusic } from "lucide-react";
 
 export default function Footer() {
