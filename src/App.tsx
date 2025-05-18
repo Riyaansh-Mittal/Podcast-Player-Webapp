@@ -1,5 +1,6 @@
 import "./App.css";
 import PodcastPlayer from "./features/podcast-player/PodcastPlayer";
+import Layout from "./layout/Layout";
 
 function App() {
   const chapters = [
@@ -22,13 +23,15 @@ function App() {
     { title: "Statement Ends", time: "21:17" },
   ];
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <PodcastPlayer
-        audioUrl={"./EP1.mp3"}
-        thumbnailUrl={"./Thumbnail.jpg"}
-        chapters={chapters}
-      />
-    </div>
+    <Layout>
+      <div className="flex flex-col items-center justify-center min-h-svh">
+        <PodcastPlayer
+          audioUrl={"./EP1.mp3"}
+          thumbnailUrl={"./Thumbnail.jpg"}
+          chapters={chapters}
+        />
+      </div>
+    </Layout>
   );
 }
 
