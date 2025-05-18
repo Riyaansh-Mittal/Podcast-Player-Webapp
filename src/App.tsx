@@ -1,6 +1,7 @@
 import "./App.css";
 import PodcastPlayer from "./features/podcast-player/PodcastPlayer";
 import Layout from "./layout/Layout";
+import PodcastPage from "./pages/PodcastPage";
 
 function App() {
   const chapters = [
@@ -24,13 +25,7 @@ function App() {
   ];
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center min-h-svh">
-        <PodcastPlayer
-          audioUrl={"./EP1.mp3"}
-          thumbnailUrl={"./Thumbnail.jpg"}
-          chapters={chapters}
-        />
-      </div>
+      <PodcastPage />
     </Layout>
   );
 }
